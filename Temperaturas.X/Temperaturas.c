@@ -42,19 +42,31 @@ _CONFIG2( IESO_OFF          // deshabilito 2 velocidades de start up
 //------------------------------------------------------------------------------
 //  Declaración de variables Globales
 //------------------------------------------------------------------------------
-
+        float temp=0;
+        int pote;
 //interrupciones
 void __attribute__((interrupt, no_auto_psv))_ADC1Interrupt(){
+    
 }
 
 //------------------------------------------------------------------------------
 //  Prototipos de funciones
         void configini(void);
+        void InitLCD(void);
 //------------------------------------------------------------------------------
 
 void main(void) {
-    
+    InitLCD();
     while(1){
+        AD1CHSbits.CH0SA=0b0100;
+        
+        ClrLCD() ;
+        SetLCDG(0);
+        putsLCD("TEMP:");
+        putLCD(temp);
+        SetLCDC(0);
+        putsLCD("POTE:");
+        putLCD(pote);
         
     }
    
@@ -69,7 +81,12 @@ void configini(void){
     AD1CON1bits.DONE=0;
     AD1CON2bits.SMPI=0000;
     AD1CON3bits.ADCS=11111111;
+    AD1CON2bits.ALTS=0;
+    AD1CON3bits.SAMC=11111;
     IFS0bits.AD1IF=0;
+    AD1CON2bits.BUFM=0;
+    
+    
     }
 
 //---------------------------------------------------
